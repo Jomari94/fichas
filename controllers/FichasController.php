@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Ficha;
 use app\models\FichaSearch;
+use app\models\Reparto;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +53,16 @@ class FichasController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Reparto::find()->where(['ficha_id' => $id]),
+            'pagination' => [
+                'pageSize' => 10,
+                ],
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

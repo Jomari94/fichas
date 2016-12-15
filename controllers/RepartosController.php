@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Reparto;
 use app\models\RepartoSearch;
+use app\models\Ficha;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -62,15 +63,18 @@ class RepartosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Reparto();
+        $titulo = Ficha::findOne($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'ficha_id' => $model->ficha_id, 'persona_id' => $model->persona_id]);
+            return $this->redirect(['fichas/view', 'id' => $model->ficha_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'ficha_id' => $id,
+                'titulo' => $titulo,
             ]);
         }
     }

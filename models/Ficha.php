@@ -27,6 +27,11 @@ class Ficha extends \yii\db\ActiveRecord
         return 'fichas';
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * @inheritdoc
      */
