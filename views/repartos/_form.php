@@ -12,9 +12,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= Html::activeHiddenInput($id, 'id') ?>
+    <?= $form->field($model, 'ficha_id')->hiddenInput([
+        'value' => $ficha_id,
+        ])->label(false) ?>
 
-    <?= $form->field($model, 'persona_id')->textInput() ?>
+    <?= $form->field($model, 'persona_id')->dropDownList($nombres) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

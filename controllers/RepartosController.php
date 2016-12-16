@@ -6,9 +6,11 @@ use Yii;
 use app\models\Reparto;
 use app\models\RepartoSearch;
 use app\models\Ficha;
+use app\models\Persona;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * RepartosController implements the CRUD actions for Reparto model.
@@ -66,7 +68,12 @@ class RepartosController extends Controller
     public function actionCreate($id)
     {
         $model = new Reparto();
-        $titulo = Ficha::findOne($id);
+        $ficha = Ficha::findOne($id);
+        $nombres = ArrayHelper::map(Persona::find()
+                            ->where(['not in', 'id', Reparto::find()
+                                    ->select('persona_id')
+                                    ->where(['ficha_id' => $id])])
+                            ->all(), 'id', 'nombre');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['fichas/view', 'id' => $model->ficha_id]);
@@ -74,7 +81,8 @@ class RepartosController extends Controller
             return $this->render('create', [
                 'model' => $model,
                 'ficha_id' => $id,
-                'titulo' => $titulo,
+                'ficha' => $ficha,
+                'nombres' => $nombres,
             ]);
         }
     }
@@ -110,7 +118,7 @@ class RepartosController extends Controller
     {
         $this->findModel($ficha_id, $persona_id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['fichas/view', 'id' => $ficha_id]);
     }
 
     /**

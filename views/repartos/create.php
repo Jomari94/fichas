@@ -13,11 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <h3><?= Html::encode($titulo->titulo) ?></h3>
+    <h3><?= Html::encode($ficha->titulo) ?></h3>
 
     <?= $this->render('_form', [
         'model' => $model,
-        'id' => $ficha_id,
+        'ficha_id' => $ficha_id,
+        'nombres' => $nombres,
     ]) ?>
 
 </div>
